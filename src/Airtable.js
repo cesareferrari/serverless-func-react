@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-const url = "http://localhost:40769/api/2-basic-api";
+import { Link } from "react-router-dom";
 
-const Basic = () => {
+const url = "/api/products";
+
+const Airtable = () => {
   const [products, setProducts] = useState([]);
 
-  const fetchData = async () => {
+  const fetchProducts = async () => {
     try {
       const { data } = await axios.get(url);
       setProducts(data);
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
-    fetchData();
+    fetchProducts();
   }, []);
 
   console.log(products);
@@ -23,26 +23,20 @@ const Basic = () => {
   return (
     <section className="section section-center">
       <div className="title">
-        <h2>basic setup</h2>
-        <div className="title-underline"> </div>
+        <h2>Airtable</h2>
+        <div className="title-underline"></div>
       </div>
       <div className="products">
         {products.map((product) => {
-          const {
-            id,
-            image: { url },
-            price,
-            name,
-          } = product;
-
+          const { id, url, price, name } = product;
           return (
-            <article className="product" key={id}>
+            <Link to={`/${id}`} className="product" key={id}>
               <img src={url} alt={name} />
               <div className="info">
                 <h5>{name}</h5>
                 <h5 className="price">${price}</h5>
               </div>
-            </article>
+            </Link>
           );
         })}
       </div>
@@ -50,4 +44,4 @@ const Basic = () => {
   );
 };
 
-export default Basic;
+export default Airtable;
